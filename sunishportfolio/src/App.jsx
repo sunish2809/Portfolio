@@ -1,50 +1,61 @@
-import React, { useState, useEffect } from "react";
-import { Github, Linkedin, Mail, ExternalLink } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Github, Linkedin, Mail, ArrowUpRight } from "lucide-react";
+
+const NAV_SECTIONS = ["about", "experience", "projects"];
+
+const CORE_STACK = [
+  "Java",
+  "Spring Boot",
+  "React",
+  "PostgreSQL",
+  "AWS",
+];
 
 export default function App() {
   const [activeSection, setActiveSection] = useState("about");
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const spotlightRef = useRef(null);
 
   useEffect(() => {
+    const el = spotlightRef.current;
+    if (!el) return;
+
     const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      el.style.background = `radial-gradient(650px at ${e.clientX}px ${e.clientY}px, rgba(45, 212, 191, 0.12), transparent 70%)`;
     };
+
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["about", "experience", "projects"];
       const isMobile = window.innerWidth < 1024;
 
       if (isMobile) {
-        // On mobile, use window scroll
         const scrollPosition = window.scrollY + 150;
 
-        for (let i = sections.length - 1; i >= 0; i--) {
-          const section = document.getElementById(sections[i]);
-          if (section) {
-            const sectionTop = section.offsetTop;
-            if (scrollPosition >= sectionTop) {
-              setActiveSection(sections[i]);
-              break;
-            }
+        for (let i = NAV_SECTIONS.length - 1; i >= 0; i--) {
+          const section = document.getElementById(NAV_SECTIONS[i]);
+
+          if (section && scrollPosition >= section.offsetTop) {
+            setActiveSection(NAV_SECTIONS[i]);
+            break;
           }
         }
       } else {
-        // On desktop, use main container scroll
         const mainContainer = document.querySelector("main");
         if (!mainContainer) return;
 
         const scrollPosition = mainContainer.scrollTop + 100;
 
-        for (let i = sections.length - 1; i >= 0; i--) {
-          const section = document.getElementById(sections[i]);
+        for (let i = NAV_SECTIONS.length - 1; i >= 0; i--) {
+          const section = document.getElementById(NAV_SECTIONS[i]);
+
           if (section) {
             const sectionTop = section.offsetTop - mainContainer.offsetTop;
+
             if (scrollPosition >= sectionTop) {
-              setActiveSection(sections[i]);
+              setActiveSection(NAV_SECTIONS[i]);
               break;
             }
           }
@@ -53,15 +64,17 @@ export default function App() {
     };
 
     const isMobile = window.innerWidth < 1024;
+
     if (isMobile) {
       window.addEventListener("scroll", handleScroll);
       return () => window.removeEventListener("scroll", handleScroll);
-    } else {
-      const mainContainer = document.querySelector("main");
-      if (mainContainer) {
-        mainContainer.addEventListener("scroll", handleScroll);
-        return () => mainContainer.removeEventListener("scroll", handleScroll);
-      }
+    }
+
+    const mainContainer = document.querySelector("main");
+
+    if (mainContainer) {
+      mainContainer.addEventListener("scroll", handleScroll);
+      return () => mainContainer.removeEventListener("scroll", handleScroll);
     }
   }, []);
 
@@ -69,23 +82,20 @@ export default function App() {
     const section = document.getElementById(sectionId);
     if (!section) return;
 
-    // Check if we're on mobile (window width < 1024px) or desktop
     const isMobile = window.innerWidth < 1024;
 
     if (isMobile) {
-      // On mobile, scroll the whole page
-      const sectionTop = section.offsetTop - 80; // Offset for better visibility
       window.scrollTo({
-        top: sectionTop,
+        top: section.offsetTop - 80,
         behavior: "smooth",
       });
     } else {
-      // On desktop, scroll within the main container
       const mainContainer = document.querySelector("main");
+
       if (mainContainer) {
         const sectionTop = section.offsetTop - mainContainer.offsetTop;
         mainContainer.scrollTo({
-          top: sectionTop - 20, // 20px offset for better visibility
+          top: sectionTop - 20,
           behavior: "smooth",
         });
       }
@@ -95,439 +105,445 @@ export default function App() {
   const experiences = [
     {
       period: "2023 — Present",
-      title: "Frontend Engineer",
+      title: "Software Engineer – Full Stack",
       company: "PwC India",
       description: (
         <>
-          Build and maintain critical components used to construct the frontend.
-          Work closely with cross-functional teams to implement best practices
-          in web accessibility.
-          <div className="mt-4 relative">
-            {/* Vertical line connecting circles */}
-            <div className="absolute left-2 top-0 bottom-0 w-px bg-slate-700"></div>
+          Developing scalable backend services and full-stack enterprise
+          applications using Java, Spring Boot, Microservices and REST APIs.
+
+          <div className="mt-5 relative">
+            <div className="absolute left-2 top-1 bottom-1 w-px bg-gradient-to-b from-teal-400/70 via-slate-700 to-slate-800" />
 
             <div className="space-y-6 pl-8">
-              <div className="relative">
-                {/* Circle */}
-                <div className="absolute -left-[29px] top-1.5 w-3 h-3 rounded-full border-2 border-teal-400 bg-slate-900 z-10"></div>
-                <h4 className="text-sm font-semibold text-slate-300 mb-1">
-                  Fusion Chatbot (Security Domain)
-                </h4>
-                <p className="text-sm text-slate-400 leading-relaxed">
-                  Contributed as a Frontend Developer to build an advanced
-                  security-focused chatbot platform similar to ChatGPT,
-                  specialized for threat-hunting queries. Developed dynamic UI
-                  components, interactive input controls, and an editable
-                  conversation history module from scratch based on Figma
-                  designs. Collaborated closely with clients to refine UX,
-                  optimize performance, and enhance scalability. Implemented
-                  robust state management using Redux and enabled real-time
-                  communication with WebSocket integration.
-                </p>
-                <div className="flex flex-wrap gap-1.5 mt-2">
-                  {["React.js", "Redux", "WebSocket", "React Router"].map(
-                    (tech, i) => (
-                      <span
-                        key={i}
-                        className="px-2 py-0.5 text-xs font-medium text-teal-300/80 bg-teal-400/5 rounded"
-                      >
-                        {tech}
-                      </span>
-                    )
-                  )}
-                </div>
-              </div>
+              <TimelineItem
+                title="Backend Services & REST APIs"
+                body="Designed and optimized 15+ REST APIs using Java and Spring Boot, improving average response time by 25% through query optimization, efficient data access and backend refactoring."
+                tags={["Java", "Spring Boot", "REST APIs", "Microservices", "SQL"]}
+              />
 
-              <div className="relative">
-                {/* Circle */}
-                <div className="absolute -left-[29px] top-1.5 w-3 h-3 rounded-full border-2 border-teal-400 bg-slate-900 z-10"></div>
-                <h4 className="text-sm font-semibold text-slate-300 mb-1">
-                  Resource Management & Demand Forecast (Pharma Domain)
-                </h4>
-                <p className="text-sm text-slate-400 leading-relaxed">
-                  Worked on a large-scale workforce optimization platform for
-                  one of the major Pharma clients, enabling intelligent resource
-                  allocation and demand forecasting. Built responsive and
-                  scalable UI modules that supported workforce planning,
-                  skill-gap analysis, and future hiring predictions. Focused on
-                  improving user experience and helping stakeholders make
-                  data-driven decisions through a streamlined Vue-based
-                  interface.
-                </p>
-                <div className="flex flex-wrap gap-1.5 mt-2">
-                  {["Vue.js"].map((tech, i) => (
-                    <span
-                      key={i}
-                      className="px-2 py-0.5 text-xs font-medium text-teal-300/80 bg-teal-400/5 rounded"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              <TimelineItem
+                title="Real-Time Communication & Security"
+                body="Implemented WebSocket-based real-time communication, reducing update latency by 40%. Built secure authentication and authorization using JWT, AWS Cognito and Azure AD/SSO with role-based access control for backend APIs."
+                tags={["WebSocket", "JWT", "AWS Cognito", "Azure AD", "RBAC"]}
+              />
 
-              <div className="relative">
-                {/* Circle */}
-                <div className="absolute -left-[29px] top-1.5 w-3 h-3 rounded-full border-2 border-teal-400 bg-slate-900 z-10"></div>
-                <h4 className="text-sm font-semibold text-slate-300 mb-1">
-                  FinCrime Investigation Tool (Banking Domain)
-                </h4>
-                <p className="text-sm text-slate-400 leading-relaxed">
-                  Developed the frontend for an internal banking tool used by
-                  financial investigators to detect and analyze fraudulent
-                  activities. Managed and visualized large datasets using
-                  efficient state management techniques. Designed multiple
-                  analytical dashboards containing bar, pie, and KPI-driven
-                  charts using FusionCharts. Built components from the ground up
-                  using Figma designs and ensured smooth navigation using React
-                  Router, while collaborating with clients to optimize workflows
-                  and UI performance.
-                </p>
-                <div className="flex flex-wrap gap-1.5 mt-2">
-                  {["React.js", "FusionCharts", "React Router"].map(
-                    (tech, i) => (
-                      <span
-                        key={i}
-                        className="px-2 py-0.5 text-xs font-medium text-teal-300/80 bg-teal-400/5 rounded"
-                      >
-                        {tech}
-                      </span>
-                    )
-                  )}
-                </div>
-              </div>
+              <TimelineItem
+                title="Data & Full-Stack Applications"
+                body="Designed MongoDB schemas and indexes for applications handling 10K+ records, improving query performance for frequently accessed data. Built backend-integrated applications using React.js, Vue.js and Next.js with AWS/Azure services and YAML-based CI/CD pipelines."
+                tags={["MongoDB", "React.js", "Vue.js", "Next.js", "CI/CD"]}
+              />
             </div>
           </div>
         </>
       ),
       tags: [
-        "JavaScript",
-        "TypeScript",
+        "Java",
+        "Spring Boot",
+        "Microservices",
+        "REST APIs",
+        "PostgreSQL",
+        "MongoDB",
         "React",
-        "Node.js",
         "Vue.js",
-        "React JS",
-        "Angular JS",
+        "AWS",
+        "Azure",
       ],
     },
   ];
 
   const projects = [
     {
+      index: "01",
+      title: "MemoryGraph",
+      description:
+        "A private personal memory platform that transforms photos, notes, videos, audio and conversations into searchable, time-aware life events. Designed and built as a modular Spring Boot monolith with PostgreSQL and pgvector, combining full-text and semantic search to retrieve relevant memories.",
+      tags: [
+        "Java",
+        "Spring Boot",
+        "PostgreSQL",
+        "JPA / Hibernate",
+        "pgvector",
+        "Vector Search",
+        "Full-Text Search",
+        "Hybrid Search",
+        "RRF",
+        "JWT",
+        "Async Processing",
+        "Concurrency",
+        "Row-Level Locking",
+        "SKIP LOCKED",
+        "Retries",
+        "Exponential Backoff",
+        "Docker",
+        "Testcontainers",
+        "Flyway",
+        "REST APIs",
+        "System Design",
+      ],
+      link: "https://memorygraph.net/",
+      highlights: [
+        { label: "Architecture", value: "Modular Monolith" },
+        { label: "Search", value: "Keyword + Semantic" },
+        { label: "Processing", value: "Async Jobs + Workers" },
+        { label: "Concurrency", value: "PostgreSQL Locking" },
+      ],
+    },
+    {
+      index: "02",
       title: "ManagePro",
       description:
-        "A full-stack workforce optimization platform for gyms, libraries, and similar services, enabling seamless user management, payment tracking, and real-time data visualization.",
+        "A full-stack SaaS platform for gyms, libraries, flats and shops, providing tenant management, rent and dues tracking, analytics, reminders and payment workflows.",
       tags: [
         "React",
+        "TypeScript",
         "Node.js",
-        "RazorPay",
-        "MongoDB",
         "Express.js",
+        "MongoDB",
+        "REST APIs",
+        "JWT",
+        "Razorpay",
         "Tailwind CSS",
-        "HTML",
-        "CSS",
+        "Analytics",
       ],
       link: "https://www.managepro.net.in/",
     },
-    {
-      title: "Task Management App",
-      description:
-        "This is a full-stack web application that allows users to manage tasks and projects efficiently. Built with a React frontend and an Express backend, the ToDo-Web app offers user authentication, task management, and project categorization, enabling users to stay organized and prioritize tasks.",
-      tags: [
-        "React",
-        "Node.js",
-        "Express.js",
-        "MongoDB",
-        "Tailwind CSS",
-        "HTML",
-        "CSS",
-      ],
-      link: "https://todo-web-frontend-chug.onrender.com",
-    },
   ];
 
-  const ExperienceCard = ({ exp, index }) => {
-    const [isHovered, setIsHovered] = useState(false);
-
-    return (
-      <div
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        className={`group relative p-6 rounded-lg transition-all duration-300 ${
-          isHovered ? "bg-slate-800/50 shadow-lg" : ""
-        }`}
-      >
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="text-sm text-slate-400 font-mono min-w-32 mt-1">
-            {exp.period}
-          </div>
-          <div className="flex-1">
-            <h3
-              className={`text-lg font-semibold mb-2 transition-colors ${
-                isHovered ? "text-teal-300" : "text-slate-200"
-              }`}
-            >
-              {exp.title} · {exp.company}
-            </h3>
-            <div className="text-slate-400 mb-4 leading-relaxed">
-              {exp.description}
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {exp.tags.map((tag, i) => (
-                <span
-                  key={i}
-                  className="px-3 py-1 text-xs font-medium text-teal-300 bg-teal-400/10 rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const ProjectCard = ({ project, index }) => {
-    const [isHovered, setIsHovered] = useState(false);
-
-    return (
-      <a
-        href={project.link}
-        target="_blank"
-        rel="noreferrer noopener"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        className={`group relative block p-6 rounded-lg transition-all duration-300 cursor-pointer ${
-          isHovered ? "bg-slate-800/50 shadow-lg" : ""
-        }`}
-        aria-label={`${project.title} (opens in a new tab)`}
-      >
-        <div className="flex gap-4">
-          <div className="flex-1">
-            <h3
-              className={`text-lg font-semibold mb-2 flex items-center gap-2 transition-colors ${
-                isHovered ? "text-teal-300" : "text-slate-200"
-              }`}
-            >
-              {project.title}
-              <ExternalLink
-                className={`w-4 h-4 transition-transform ${
-                  isHovered ? "translate-x-1 -translate-y-1" : ""
-                }`}
-              />
-            </h3>
-            <p className="text-slate-400 mb-4 leading-relaxed">
-              {project.description}
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {project.tags.map((tag, i) => (
-                <span
-                  key={i}
-                  className="px-3 py-1 text-xs font-medium text-teal-300 bg-teal-400/10 rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </a>
-    );
-  };
-
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-300 relative overflow-hidden lg:h-screen">
-      {/* Gradient spotlight effect */}
+    <div className="min-h-screen bg-night-950 text-slate-300 relative overflow-hidden lg:h-screen">
+      <div className="pointer-events-none fixed inset-0 z-0 bg-grid" />
+      <div className="pointer-events-none fixed -top-40 -left-24 z-0 h-[32rem] w-[32rem] rounded-full bg-teal-400/[0.16] blur-[140px]" />
+      <div className="pointer-events-none fixed top-[40%] -right-32 z-0 h-[30rem] w-[30rem] rounded-full bg-indigo-500/[0.14] blur-[140px]" />
+      <div className="pointer-events-none fixed inset-0 z-0 noise" />
+
       <div
-        className="pointer-events-none fixed inset-0 z-30 transition duration-300"
-        style={{
-          background: `radial-gradient(600px at ${mousePosition.x}px ${mousePosition.y}px, rgba(29, 78, 216, 0.15), transparent 80%)`,
-        }}
+        ref={spotlightRef}
+        className="pointer-events-none fixed inset-0 z-0 hidden lg:block"
       />
 
       <div className="relative z-10 mx-auto min-h-screen max-w-screen-xl px-6 py-12 md:px-12 md:py-16 lg:py-0 lg:h-full lg:overflow-hidden">
-        <div className="lg:flex lg:justify-between lg:gap-4 lg:h-full">
-          {/* Left Column - Fixed */}
-          <header className="lg:sticky lg:top-0 lg:flex lg:flex-col lg:justify-between lg:max-h-screen lg:w-[48%] lg:py-24 mb-12 lg:mb-0">
+        <div className="lg:flex lg:justify-between lg:gap-8 lg:h-full">
+          <header className="lg:sticky lg:top-0 lg:flex lg:flex-col lg:justify-between lg:max-h-screen lg:w-[46%] lg:py-24 mb-14 lg:mb-0 animate-fade-up">
             <div>
-              <h1 className="text-4xl font-bold tracking-tight text-slate-200 sm:text-5xl mb-3">
+              <div className="inline-flex items-center gap-2 rounded-full border border-teal-400/20 bg-teal-400/10 px-3 py-1.5 mb-6 backdrop-blur-sm">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-60 animate-pulse-dot" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-teal-400" />
+                </span>
+                <span className="text-xs font-medium tracking-wide text-teal-100">
+                  Currently at PwC India
+                </span>
+              </div>
+
+              <h1 className="font-display text-5xl sm:text-6xl font-extrabold tracking-tight text-gradient mb-3">
                 Sunish
               </h1>
-              <h2 className="text-xl font-medium tracking-tight text-slate-200 sm:text-2xl mb-4">
-                Frontend Engineer
+
+              <h2 className="text-xl font-medium tracking-tight text-slate-200 sm:text-2xl mb-5">
+                Software Engineer – Full Stack
               </h2>
-              <p className="text-lg text-slate-400 max-w-xs leading-normal mb-8 lg:mb-0">
-                I build accessible, pixel-perfect digital experiences for the
-                web.
+
+              <p className="text-base sm:text-lg text-slate-300 max-w-sm leading-relaxed mb-7">
+                I build scalable backend systems and full-stack applications
+                with a focus on reliability, performance, and clean
+                architecture.
               </p>
 
-              {/* Navigation */}
-              <nav className="hidden lg:block mt-16">
-                <ul className="space-y-4">
-                  {["about", "experience", "projects"].map((section) => (
-                    <li key={section}>
-                      <a
-                        href={`#${section}`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setActiveSection(section);
-                          scrollToSection(section);
-                        }}
-                        className="group flex items-center py-2"
-                      >
-                        <span
-                          className={`mr-4 h-px transition-all ${
-                            activeSection === section
-                              ? "w-16 bg-slate-200"
-                              : "w-8 bg-slate-600 group-hover:w-16 group-hover:bg-slate-200"
-                          }`}
-                        />
-                        <span
-                          className={`text-xs font-bold uppercase tracking-widest ${
-                            activeSection === section
-                              ? "text-slate-200"
-                              : "text-slate-500 group-hover:text-slate-200"
-                          }`}
+              <div className="flex flex-wrap gap-2 mb-2 max-w-sm">
+                {CORE_STACK.map((tech) => (
+                  <span key={tech} className="chip">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              <nav className="hidden lg:block mt-16" aria-label="Page sections">
+                <ul className="space-y-1">
+                  {NAV_SECTIONS.map((section) => {
+                    const isActive = activeSection === section;
+
+                    return (
+                      <li key={section}>
+                        <a
+                          href={`#${section}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setActiveSection(section);
+                            scrollToSection(section);
+                          }}
+                          className="group flex items-center py-2.5"
                         >
-                          {section}
-                        </span>
-                      </a>
-                    </li>
-                  ))}
+                          <span
+                            className={`mr-4 h-px transition-all duration-300 ${
+                              isActive
+                                ? "w-16 bg-teal-300"
+                                : "w-8 bg-slate-600 group-hover:w-16 group-hover:bg-slate-200"
+                            }`}
+                          />
+                          <span
+                            className={`text-xs font-bold uppercase tracking-[0.18em] transition-colors ${
+                              isActive
+                                ? "text-slate-100"
+                                : "text-slate-500 group-hover:text-slate-200"
+                            }`}
+                          >
+                            {section}
+                          </span>
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
               </nav>
             </div>
 
-            {/* Social Links */}
-            <div className="mt-8 flex gap-6 lg:mt-0">
-              <a
+            <div className="mt-10 flex flex-wrap items-center gap-3 lg:mt-0">
+              <SocialLink
                 href="https://github.com/sunish2809"
-                target="_blank"
-                rel="noreferrer noopener"
-                className="text-slate-400 hover:text-slate-200 transition-colors"
-                aria-label="GitHub (opens in a new tab)"
-              >
-                <Github className="w-6 h-6" />
-              </a>
+                label="GitHub"
+                icon={Github}
+              />
+              <SocialLink
+                href="https://www.linkedin.com/in/sunish-08b542201"
+                label="LinkedIn"
+                icon={Linkedin}
+              />
               <a
-                href="https://www.linkedin.com/in/sunish-08b542201?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
-                target="_blank"
-                rel="noreferrer noopener"
-                className="text-slate-400 hover:text-slate-200 transition-colors"
-                aria-label="LinkedIn (opens in a new tab)"
+                href="mailto:sunish.5186@gmail.com"
+                className="inline-flex items-center gap-2 rounded-full border border-teal-400/25 bg-teal-400/10 px-4 py-2 text-sm font-medium text-teal-200 transition-all hover:border-teal-300/50 hover:bg-teal-400/20 hover:text-teal-100"
               >
-                <Linkedin className="w-6 h-6" />
-              </a>
-              <a
-                href="https://mail.google.com/mail/?view=cm&to=sunish.5186@gmail.com"
-                target="_blank"
-                rel="noreferrer noopener"
-                className="text-slate-400 hover:text-slate-200 transition-colors"
-                aria-label="Email (opens Gmail in a new tab)"
-              >
-                <Mail className="w-6 h-6" />
+                <Mail className="w-4 h-4" />
+                Get in touch
               </a>
             </div>
           </header>
 
-          {/* Right Column - Scrollable */}
-          <main className="lg:w-[52%] lg:py-24 lg:overflow-y-auto lg:h-full scrollbar-hide">
-            {/* About Section */}
-            <section id="about" className="mb-16 lg:mb-36 scroll-mt-16">
-              <div className="mb-4 lg:hidden">
-                <h2 className="text-sm font-bold uppercase tracking-widest text-slate-200">
-                  About
-                </h2>
-              </div>
-              <div className="space-y-4 text-slate-400 leading-relaxed">
+          <main className="lg:w-[54%] lg:py-24 lg:overflow-y-auto lg:h-full scrollbar-hide">
+            <section id="about" className="mb-16 lg:mb-28 scroll-mt-16">
+              <SectionLabel>About</SectionLabel>
+
+              <div className="space-y-4 text-slate-300 leading-relaxed">
                 <p>
-                  I'm a developer passionate about crafting accessible,
-                  pixel-perfect user interfaces that blend thoughtful design
-                  with robust engineering. My favorite work lies at the
-                  intersection of design and development, creating experiences
-                  that not only look great but are meticulously built for
-                  performance and usability.
+                  I'm a Software Engineer focused on building scalable backend
+                  systems and full-stack applications. I enjoy solving
+                  engineering problems around APIs, databases, concurrency,
+                  asynchronous processing, distributed systems and system
+                  design.
                 </p>
+
                 <p>
-                  Currently, I'm a Front-End Engineer at{" "}
-                  <a
-                    href="https://www.pwc.in/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="font-medium text-slate-200 hover:text-teal-300 focus-visible:text-teal-300"
-                    aria-label="PwC India (opens in a new tab)"
-                  >
-                    PwC India
-                  </a>
-                  , specializing in building accessible web applications. I
-                  contribute to the creation and maintenance of UI components
-                  that power modern web experiences.
+                  Currently, I'm a Software Engineer – Full Stack at{" "}
+                  <TextLink href="https://www.pwc.in/">PwC India</TextLink>
+                  , where I work with Java, Spring Boot, REST APIs,
+                  databases, real-time communication and modern frontend
+                  technologies.
                 </p>
+
                 <p>
-                  In my spare time, I enjoy exploring new technologies,
-                  contributing to open-source projects, and sharing knowledge
-                  with the developer community.
+                  I'm also building{" "}
+                  <TextLink href="https://memorygraph.net/">MemoryGraph</TextLink>
+                  , a private personal memory platform focused on search,
+                  asynchronous processing, concurrency and reliable backend
+                  architecture.
                 </p>
               </div>
             </section>
 
-            {/* Experience Section */}
-            <section id="experience" className="mb-16 lg:mb-36 scroll-mt-16">
-              <div className="mb-4 lg:hidden">
-                <h2 className="text-sm font-bold uppercase tracking-widest text-slate-200">
-                  Experience
-                </h2>
-              </div>
+            <section id="experience" className="mb-16 lg:mb-28 scroll-mt-16">
+              <SectionLabel>Experience</SectionLabel>
+
               <div className="space-y-4">
-                {experiences.map((exp, index) => (
-                  <ExperienceCard key={index} exp={exp} index={index} />
+                {experiences.map((exp) => (
+                  <ExperienceCard key={exp.company} exp={exp} />
                 ))}
               </div>
+
               <a
                 href="/Sunish_FrontendRes.pdf"
                 target="_blank"
                 rel="noreferrer noopener"
-                className="inline-flex items-center gap-2 text-slate-200 hover:text-teal-300 transition-colors mt-8 group"
-                aria-label="View Full Résumé (opens in a new tab)"
+                className="group mt-8 inline-flex items-center gap-2 text-slate-100 font-semibold transition-colors hover:text-teal-300"
               >
-                <span className="font-semibold">View Full Résumé</span>
-                <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                View Full Résumé
+                <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </section>
 
-            {/* Projects Section */}
             <section id="projects" className="mb-16 scroll-mt-16">
-              <div className="lg:hidden mb-4">
-                <h2 className="text-sm font-bold uppercase tracking-widest text-slate-200">
-                  Projects
-                </h2>
-              </div>
-              <div className="space-y-4">
-                {projects.map((project, index) => (
-                  <ProjectCard key={index} project={project} index={index} />
+              <SectionLabel>Projects</SectionLabel>
+
+              <div className="space-y-5">
+                {projects.map((project) => (
+                  <ProjectCard key={project.title} project={project} />
                 ))}
               </div>
-              <a
-                href="#"
-                className="inline-flex items-center gap-2 text-slate-200 hover:text-teal-300 transition-colors mt-8 group"
-              >
-                <span className="font-semibold">View Full Project Archive</span>
-                <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-              </a>
+
+              <p className="text-sm text-slate-500 mt-8">
+                More projects and experiments are available on{" "}
+                <TextLink href="https://github.com/sunish2809">GitHub</TextLink>.
+              </p>
             </section>
 
-            {/* Footer */}
-            <footer className="text-sm text-slate-500 leading-relaxed">
+            <footer className="pb-8 text-sm text-slate-500 leading-relaxed border-t border-white/[0.06] pt-8">
               <p>
-                Coded with passion. Built with{" "}
-                <span className="text-slate-400">React</span> and{" "}
-                <span className="text-slate-400">Tailwind CSS</span>.
+                Designed and built with{" "}
+                <span className="text-slate-300">React</span>
+                {" "}and{" "}
+                <span className="text-slate-300">Tailwind CSS</span>
+                {" "}— with a strong interest in backend engineering.
               </p>
             </footer>
           </main>
         </div>
       </div>
     </div>
+  );
+}
+
+function SectionLabel({ children }) {
+  return (
+    <div className="mb-5 lg:hidden">
+      <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-slate-100">
+        {children}
+      </h2>
+    </div>
+  );
+}
+
+function TextLink({ href, children }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer noopener"
+      className="font-medium text-slate-100 underline decoration-teal-400/30 underline-offset-4 transition-colors hover:text-teal-300 hover:decoration-teal-300"
+    >
+      {children}
+    </a>
+  );
+}
+
+function SocialLink({ href, label, icon: Icon }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer noopener"
+      aria-label={label}
+      className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-slate-400 transition-all hover:-translate-y-0.5 hover:border-teal-400/40 hover:bg-teal-400/10 hover:text-teal-200"
+    >
+      <Icon className="w-5 h-5" />
+    </a>
+  );
+}
+
+function TimelineItem({ title, body, tags }) {
+  return (
+    <div className="relative">
+      <div className="absolute -left-[29px] top-1.5 z-10 h-3 w-3 rounded-full border-2 border-teal-400 bg-night-950 shadow-[0_0_12px_rgba(45,212,191,0.6)]" />
+      <h4 className="text-sm font-semibold text-slate-200 mb-1">{title}</h4>
+      <p className="text-sm text-slate-400 leading-relaxed">{body}</p>
+      <div className="mt-2.5 flex flex-wrap gap-1.5">
+        {tags.map((tech) => (
+          <span
+            key={tech}
+            className="rounded-md bg-teal-400/5 px-2 py-0.5 text-[11px] font-medium text-teal-300/80"
+          >
+            {tech}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ExperienceCard({ exp }) {
+  return (
+    <article className="surface-card group">
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider min-w-32 mt-1">
+          {exp.period}
+        </div>
+
+        <div className="flex-1">
+          <h3 className="text-lg font-semibold mb-2 text-slate-100 transition-colors group-hover:text-teal-300">
+            {exp.title}{" "}
+            <span className="text-slate-500 group-hover:text-teal-400/80">·</span>{" "}
+            {exp.company}
+          </h3>
+
+          <div className="text-slate-400 mb-5 leading-relaxed">
+            {exp.description}
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {exp.tags.map((tag) => (
+              <span key={tag} className="chip">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function ProjectCard({ project }) {
+  const isLink = project.link && project.link !== "#";
+  const Card = isLink ? "a" : "article";
+
+  return (
+    <Card
+      {...(isLink
+        ? {
+            href: project.link,
+            target: "_blank",
+            rel: "noreferrer noopener",
+            "aria-label": `${project.title} (opens in a new tab)`,
+          }
+        : {})}
+      className={`surface-card group block ${isLink ? "cursor-pointer" : ""}`}
+    >
+      <div className="flex items-start justify-between gap-4 mb-3">
+        <span className="font-display text-sm font-bold tracking-widest text-teal-400/70">
+          {project.index}
+        </span>
+        {isLink && (
+          <ArrowUpRight className="w-4 h-4 text-slate-500 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-teal-300" />
+        )}
+      </div>
+
+      <h3 className="text-lg font-semibold mb-2 text-slate-100 transition-colors group-hover:text-teal-300">
+        {project.title}
+      </h3>
+
+      <p className="text-slate-400 mb-5 leading-relaxed">{project.description}</p>
+
+      {project.highlights && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+          {project.highlights.map((item) => (
+            <div
+              key={item.label}
+              className="rounded-xl border border-white/[0.05] bg-black/20 px-3.5 py-3"
+            >
+              <p className="text-[11px] uppercase tracking-wider text-slate-500 mb-1">
+                {item.label}
+              </p>
+              <p className="text-sm text-slate-200">{item.value}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="flex flex-wrap gap-2">
+        {project.tags.map((tag) => (
+          <span key={tag} className="chip">
+            {tag}
+          </span>
+        ))}
+      </div>
+    </Card>
   );
 }
