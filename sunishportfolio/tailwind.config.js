@@ -10,14 +10,8 @@ export default {
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         display: ['Syne', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
-      colors: {
-        night: {
-          950: '#07111f',
-          900: '#0b1628',
-        },
-      },
       boxShadow: {
-        glow: '0 0 0 1px rgba(45, 212, 191, 0.18), 0 24px 80px -28px rgba(45, 212, 191, 0.35)',
+        card: '0 16px 40px -24px rgba(15, 23, 42, 0.22)',
       },
       keyframes: {
         'fade-up': {

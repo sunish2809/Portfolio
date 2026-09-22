@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Github, Linkedin, Mail, ArrowUpRight } from "lucide-react";
 
 const NAV_SECTIONS = ["about", "experience", "projects"];
@@ -13,19 +13,6 @@ const CORE_STACK = [
 
 export default function App() {
   const [activeSection, setActiveSection] = useState("about");
-  const spotlightRef = useRef(null);
-
-  useEffect(() => {
-    const el = spotlightRef.current;
-    if (!el) return;
-
-    const handleMouseMove = (e) => {
-      el.style.background = `radial-gradient(650px at ${e.clientX}px ${e.clientY}px, rgba(45, 212, 191, 0.12), transparent 70%)`;
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -113,7 +100,7 @@ export default function App() {
           applications using Java, Spring Boot, Microservices and REST APIs.
 
           <div className="mt-5 relative">
-            <div className="absolute left-2 top-1 bottom-1 w-px bg-gradient-to-b from-teal-400/70 via-slate-700 to-slate-800" />
+            <div className="absolute left-2 top-1 bottom-1 w-px bg-slate-200" />
 
             <div className="space-y-6 pl-8">
               <TimelineItem
@@ -211,40 +198,32 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-night-950 text-slate-300 relative overflow-hidden lg:h-screen">
+    <div className="min-h-screen bg-white text-slate-600 relative overflow-hidden lg:h-screen">
       <div className="pointer-events-none fixed inset-0 z-0 bg-grid" />
-      <div className="pointer-events-none fixed -top-40 -left-24 z-0 h-[32rem] w-[32rem] rounded-full bg-teal-400/[0.16] blur-[140px]" />
-      <div className="pointer-events-none fixed top-[40%] -right-32 z-0 h-[30rem] w-[30rem] rounded-full bg-indigo-500/[0.14] blur-[140px]" />
-      <div className="pointer-events-none fixed inset-0 z-0 noise" />
-
-      <div
-        ref={spotlightRef}
-        className="pointer-events-none fixed inset-0 z-0 hidden lg:block"
-      />
 
       <div className="relative z-10 mx-auto min-h-screen max-w-screen-xl px-6 py-12 md:px-12 md:py-16 lg:py-0 lg:h-full lg:overflow-hidden">
         <div className="lg:flex lg:justify-between lg:gap-8 lg:h-full">
           <header className="lg:sticky lg:top-0 lg:flex lg:flex-col lg:justify-between lg:max-h-screen lg:w-[46%] lg:py-24 mb-14 lg:mb-0 animate-fade-up">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-teal-400/20 bg-teal-400/10 px-3 py-1.5 mb-6 backdrop-blur-sm">
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 mb-6">
                 <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-60 animate-pulse-dot" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-teal-400" />
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-slate-400 opacity-60 animate-pulse-dot" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-slate-700" />
                 </span>
-                <span className="text-xs font-medium tracking-wide text-teal-100">
+                <span className="text-xs font-medium tracking-wide text-slate-600">
                   Currently at PwC India
                 </span>
               </div>
 
-              <h1 className="font-display text-5xl sm:text-6xl font-extrabold tracking-tight text-gradient mb-3">
+              <h1 className="font-display text-5xl sm:text-6xl font-extrabold tracking-tight text-slate-900 mb-3">
                 Sunish
               </h1>
 
-              <h2 className="text-xl font-medium tracking-tight text-slate-200 sm:text-2xl mb-5">
+              <h2 className="text-xl font-medium tracking-tight text-slate-800 sm:text-2xl mb-5">
                 Software Engineer – Full Stack
               </h2>
 
-              <p className="text-base sm:text-lg text-slate-300 max-w-sm leading-relaxed mb-7">
+              <p className="text-base sm:text-lg text-slate-700 max-w-sm leading-relaxed mb-7">
                 I build scalable backend systems and full-stack applications
                 with a focus on reliability, performance, and clean
                 architecture.
@@ -277,15 +256,15 @@ export default function App() {
                           <span
                             className={`mr-4 h-px transition-all duration-300 ${
                               isActive
-                                ? "w-16 bg-teal-300"
-                                : "w-8 bg-slate-600 group-hover:w-16 group-hover:bg-slate-200"
+                                ? "w-16 bg-slate-900"
+                                : "w-8 bg-slate-300 group-hover:w-16 group-hover:bg-slate-700"
                             }`}
                           />
                           <span
                             className={`text-xs font-bold uppercase tracking-[0.18em] transition-colors ${
                               isActive
-                                ? "text-slate-100"
-                                : "text-slate-500 group-hover:text-slate-200"
+                                ? "text-slate-900"
+                                : "text-slate-400 group-hover:text-slate-700"
                             }`}
                           >
                             {section}
@@ -311,7 +290,7 @@ export default function App() {
               />
               <a
                 href="mailto:sunish.5186@gmail.com"
-                className="inline-flex items-center gap-2 rounded-full border border-teal-400/25 bg-teal-400/10 px-4 py-2 text-sm font-medium text-teal-200 transition-all hover:border-teal-300/50 hover:bg-teal-400/20 hover:text-teal-100"
+                className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-slate-900 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-slate-800"
               >
                 <Mail className="w-4 h-4" />
                 Get in touch
@@ -323,7 +302,7 @@ export default function App() {
             <section id="about" className="mb-16 lg:mb-28 scroll-mt-16">
               <SectionLabel>About</SectionLabel>
 
-              <div className="space-y-4 text-slate-300 leading-relaxed">
+              <div className="space-y-4 text-slate-700 leading-relaxed">
                 <p>
                   I'm a Software Engineer focused on building scalable backend
                   systems and full-stack applications. I enjoy solving
@@ -363,7 +342,7 @@ export default function App() {
                 href="/Sunish_FrontendRes.pdf"
                 target="_blank"
                 rel="noreferrer noopener"
-                className="group mt-8 inline-flex items-center gap-2 text-slate-100 font-semibold transition-colors hover:text-teal-300"
+                className="group mt-8 inline-flex items-center gap-2 text-slate-900 font-semibold transition-colors hover:text-slate-600"
               >
                 View Full Résumé
                 <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -385,12 +364,12 @@ export default function App() {
               </p>
             </section>
 
-            <footer className="pb-8 text-sm text-slate-500 leading-relaxed border-t border-white/[0.06] pt-8">
+            <footer className="pb-8 text-sm text-slate-500 leading-relaxed border-t border-slate-200 pt-8">
               <p>
                 Designed and built with{" "}
-                <span className="text-slate-300">React</span>
+                <span className="text-slate-700">React</span>
                 {" "}and{" "}
-                <span className="text-slate-300">Tailwind CSS</span>
+                <span className="text-slate-700">Tailwind CSS</span>
                 {" "}— with a strong interest in backend engineering.
               </p>
             </footer>
@@ -404,7 +383,7 @@ export default function App() {
 function SectionLabel({ children }) {
   return (
     <div className="mb-5 lg:hidden">
-      <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-slate-100">
+      <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-slate-900">
         {children}
       </h2>
     </div>
@@ -417,7 +396,7 @@ function TextLink({ href, children }) {
       href={href}
       target="_blank"
       rel="noreferrer noopener"
-      className="font-medium text-slate-100 underline decoration-teal-400/30 underline-offset-4 transition-colors hover:text-teal-300 hover:decoration-teal-300"
+      className="font-medium text-slate-900 underline decoration-slate-300 underline-offset-4 transition-colors hover:text-slate-600 hover:decoration-slate-500"
     >
       {children}
     </a>
@@ -431,7 +410,7 @@ function SocialLink({ href, label, icon: Icon }) {
       target="_blank"
       rel="noreferrer noopener"
       aria-label={label}
-      className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-slate-400 transition-all hover:-translate-y-0.5 hover:border-teal-400/40 hover:bg-teal-400/10 hover:text-teal-200"
+      className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition-all hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
     >
       <Icon className="w-5 h-5" />
     </a>
@@ -441,14 +420,14 @@ function SocialLink({ href, label, icon: Icon }) {
 function TimelineItem({ title, body, tags }) {
   return (
     <div className="relative">
-      <div className="absolute -left-[29px] top-1.5 z-10 h-3 w-3 rounded-full border-2 border-teal-400 bg-night-950 shadow-[0_0_12px_rgba(45,212,191,0.6)]" />
-      <h4 className="text-sm font-semibold text-slate-200 mb-1">{title}</h4>
-      <p className="text-sm text-slate-400 leading-relaxed">{body}</p>
+      <div className="absolute -left-[29px] top-1.5 z-10 h-3 w-3 rounded-full border-2 border-slate-400 bg-white" />
+      <h4 className="text-sm font-semibold text-slate-800 mb-1">{title}</h4>
+      <p className="text-sm text-slate-600 leading-relaxed">{body}</p>
       <div className="mt-2.5 flex flex-wrap gap-1.5">
         {tags.map((tech) => (
           <span
             key={tech}
-            className="rounded-md bg-teal-400/5 px-2 py-0.5 text-[11px] font-medium text-teal-300/80"
+            className="rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-600"
           >
             {tech}
           </span>
@@ -467,13 +446,13 @@ function ExperienceCard({ exp }) {
         </div>
 
         <div className="flex-1">
-          <h3 className="text-lg font-semibold mb-2 text-slate-100 transition-colors group-hover:text-teal-300">
+          <h3 className="text-lg font-semibold mb-2 text-slate-900 transition-colors group-hover:text-slate-700">
             {exp.title}{" "}
-            <span className="text-slate-500 group-hover:text-teal-400/80">·</span>{" "}
+            <span className="text-slate-400">·</span>{" "}
             {exp.company}
           </h3>
 
-          <div className="text-slate-400 mb-5 leading-relaxed">
+          <div className="text-slate-600 mb-5 leading-relaxed">
             {exp.description}
           </div>
 
@@ -507,31 +486,31 @@ function ProjectCard({ project }) {
       className={`surface-card group block ${isLink ? "cursor-pointer" : ""}`}
     >
       <div className="flex items-start justify-between gap-4 mb-3">
-        <span className="font-display text-sm font-bold tracking-widest text-teal-400/70">
+        <span className="font-display text-sm font-bold tracking-widest text-slate-400">
           {project.index}
         </span>
         {isLink && (
-          <ArrowUpRight className="w-4 h-4 text-slate-500 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-teal-300" />
+          <ArrowUpRight className="w-4 h-4 text-slate-400 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-slate-900" />
         )}
       </div>
 
-      <h3 className="text-lg font-semibold mb-2 text-slate-100 transition-colors group-hover:text-teal-300">
+      <h3 className="text-lg font-semibold mb-2 text-slate-900 transition-colors group-hover:text-slate-700">
         {project.title}
       </h3>
 
-      <p className="text-slate-400 mb-5 leading-relaxed">{project.description}</p>
+      <p className="text-slate-600 mb-5 leading-relaxed">{project.description}</p>
 
       {project.highlights && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
           {project.highlights.map((item) => (
             <div
               key={item.label}
-              className="rounded-xl border border-white/[0.05] bg-black/20 px-3.5 py-3"
+              className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-3"
             >
               <p className="text-[11px] uppercase tracking-wider text-slate-500 mb-1">
                 {item.label}
               </p>
-              <p className="text-sm text-slate-200">{item.value}</p>
+              <p className="text-sm text-slate-800">{item.value}</p>
             </div>
           ))}
         </div>
