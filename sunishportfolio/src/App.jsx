@@ -4,11 +4,11 @@ import { Github, Linkedin, Mail, ArrowUpRight } from "lucide-react";
 const NAV_SECTIONS = ["about", "experience", "projects"];
 
 const CORE_STACK = [
+  "React",
+  "Vue.js",
+  "Next.js",
   "Java",
   "Spring Boot",
-  "React",
-  "PostgreSQL",
-  "AWS",
 ];
 
 export default function App() {
@@ -91,48 +91,59 @@ export default function App() {
 
   const experiences = [
     {
-      period: "2023 — Present",
+      period: "Aug 2023 — Present",
       title: "Software Engineer – Full Stack",
-      company: "PwC India",
+      company: "PwC India, Kolkata",
       description: (
         <>
-          Developing scalable backend services and full-stack enterprise
-          applications using Java, Spring Boot, Microservices and REST APIs.
+          Primarily a frontend engineer building data-driven enterprise UIs
+          with React, Vue.js and Next.js, then contributing across Java Spring
+          Boot APIs, real-time updates and identity.
 
           <div className="mt-5 relative">
             <div className="absolute left-2 top-1 bottom-1 w-px bg-slate-200" />
 
             <div className="space-y-6 pl-8">
               <TimelineItem
-                title="Backend Services & REST APIs"
-                body="Designed and optimized 15+ REST APIs using Java and Spring Boot, improving average response time by 25% through query optimization, efficient data access and backend refactoring."
-                tags={["Java", "Spring Boot", "REST APIs", "Microservices", "SQL"]}
+                title="Data-Driven UI & Frontend Platforms"
+                body="Built and maintained 20+ data-driven UI components including tables, filters, charts and maps in React, Vue.js and Next.js, improving interaction speed and responsiveness by 30%. Developed interactive tables and multi-series charts with sorting, filtering and drill-down workflows, reducing user task time by 35%."
+                tags={["React", "Vue.js", "Next.js", "Charts", "Tables"]}
               />
 
               <TimelineItem
-                title="Real-Time Communication & Security"
-                body="Implemented WebSocket-based real-time communication, reducing update latency by 40%. Built secure authentication and authorization using JWT, AWS Cognito and Azure AD/SSO with role-based access control for backend APIs."
-                tags={["WebSocket", "JWT", "AWS Cognito", "Azure AD", "RBAC"]}
+                title="Maps & Real-Time Experiences"
+                body="Mapped 10,000+ geographic points using Leaflet.js to support location-based enterprise workflows. Implemented WebSocket-based real-time updates across frontend and backend workflows, reducing update latency by 40%."
+                tags={["Leaflet.js", "WebSocket", "Real-time"]}
               />
 
               <TimelineItem
-                title="Data & Full-Stack Applications"
-                body="Designed MongoDB schemas and indexes for applications handling 10K+ records, improving query performance for frequently accessed data. Built backend-integrated applications using React.js, Vue.js and Next.js with AWS/Azure services and YAML-based CI/CD pipelines."
-                tags={["MongoDB", "React.js", "Vue.js", "Next.js", "CI/CD"]}
+                title="APIs, Auth & Delivery"
+                body="Contributed to 5+ Java Spring Boot REST APIs, implementing service-layer logic, request/response handling, MongoDB data access and backend integrations; query and payload optimizations reduced average response time by 25%. Implemented JWT authentication, AWS Cognito, Azure AD SSO and role-based access control across API and client layers, and contributed to MongoDB schema/index design and YAML-based CI/CD."
+                tags={[
+                  "Java",
+                  "Spring Boot",
+                  "REST APIs",
+                  "MongoDB",
+                  "JWT",
+                  "AWS Cognito",
+                  "Azure AD",
+                  "CI/CD",
+                ]}
               />
             </div>
           </div>
         </>
       ),
       tags: [
-        "Java",
-        "Spring Boot",
-        "Microservices",
-        "REST APIs",
-        "PostgreSQL",
-        "MongoDB",
         "React",
         "Vue.js",
+        "Next.js",
+        "Leaflet.js",
+        "Java",
+        "Spring Boot",
+        "REST APIs",
+        "MongoDB",
+        "JWT",
         "AWS",
         "Azure",
       ],
@@ -142,6 +153,36 @@ export default function App() {
   const projects = [
     {
       index: "01",
+      title: "Gatekeeper",
+      description:
+        "A plug-and-play multi-tenant API gateway that sits in front of private backends. Tenants publish routes and policies from a React control plane; the smart gateway enforces CORS, OIDC/JWT auth, Redis rate limits and idempotency from an in-memory snapshot, then proxies the request. Config lives in MySQL, and live traffic events flow through Kafka into MongoDB analytics.",
+      tags: [
+        "Java",
+        "Spring Boot",
+        "Microservices",
+        "React",
+        "MySQL",
+        "Redis",
+        "Kafka",
+        "MongoDB",
+        "JWT",
+        "OIDC",
+        "Rate Limiting",
+        "Idempotency",
+        "API Gateway",
+        "System Design",
+        "Docker",
+      ],
+      link: "https://frontend-production-48d42.up.railway.app/",
+      highlights: [
+        { label: "Architecture", value: "Control + Data Plane" },
+        { label: "Enforcement", value: "Auth, CORS, Limits" },
+        { label: "Messaging", value: "Kafka Events" },
+        { label: "Storage", value: "MySQL + Redis + Mongo" },
+      ],
+    },
+    {
+      index: "02",
       title: "MemoryGraph",
       description:
         "A private personal memory platform that transforms photos, notes, videos, audio and conversations into searchable, time-aware life events. Designed and built as a modular Spring Boot monolith with PostgreSQL and pgvector, combining full-text and semantic search to retrieve relevant memories.",
@@ -176,25 +217,6 @@ export default function App() {
         { label: "Concurrency", value: "PostgreSQL Locking" },
       ],
     },
-    {
-      index: "02",
-      title: "ManagePro",
-      description:
-        "A full-stack SaaS platform for gyms, libraries, flats and shops, providing tenant management, rent and dues tracking, analytics, reminders and payment workflows.",
-      tags: [
-        "React",
-        "TypeScript",
-        "Node.js",
-        "Express.js",
-        "MongoDB",
-        "REST APIs",
-        "JWT",
-        "Razorpay",
-        "Tailwind CSS",
-        "Analytics",
-      ],
-      link: "https://www.managepro.net.in/",
-    },
   ];
 
   return (
@@ -224,8 +246,8 @@ export default function App() {
               </h2>
 
               <p className="text-base sm:text-lg text-slate-700 max-w-sm leading-relaxed mb-7">
-                I build scalable backend systems and full-stack applications
-                with a focus on reliability, performance, and clean
+                I build data-driven frontend applications and full-stack
+                systems with a focus on reliability, performance, and clean
                 architecture.
               </p>
 
@@ -304,19 +326,18 @@ export default function App() {
 
               <div className="space-y-4 text-slate-700 leading-relaxed">
                 <p>
-                  I'm a Software Engineer focused on building scalable backend
-                  systems and full-stack applications. I enjoy solving
-                  engineering problems around APIs, databases, concurrency,
-                  asynchronous processing, distributed systems and system
-                  design.
+                  I'm a Software Engineer focused on building data-driven
+                  frontend applications and full-stack systems. I enjoy solving
+                  engineering problems around UI architecture, APIs, databases,
+                  real-time updates and system design.
                 </p>
 
                 <p>
                   Currently, I'm a Software Engineer – Full Stack at{" "}
                   <TextLink href="https://www.pwc.in/">PwC India</TextLink>
-                  , where I work with Java, Spring Boot, REST APIs,
-                  databases, real-time communication and modern frontend
-                  technologies.
+                  , where I primarily work on React, Vue.js and Next.js
+                  interfaces, and also contribute to Java Spring Boot REST
+                  APIs, real-time communication and identity.
                 </p>
 
                 <p>
